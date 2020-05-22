@@ -78,6 +78,51 @@ public class TestFunctions extends BaseTest {
         assertEquals(expected, result);
     }
 
+    @Test public void testLengthWithIterator_callTwice() throws Exception {
+        List<String> names = new ArrayList<String>();
+        names.add("Ter");
+        names.add("Tom");
+        names.add("Sriram");
+
+        ST e = new ST(
+            "<length(names)> <length(names)>"
+        );
+        // NOTE: don't pass in the List, but an Iterator on the list
+        e.add("names", names.iterator());
+        String expecting = "3 3";
+        assertEquals(expecting, e.render());
+    }
+
+    @Test public void testLengthWithIterator_applyAndLength() throws Exception {
+        List<String> names = new ArrayList<String>();
+        names.add("Ter");
+        names.add("Tom");
+        names.add("Sriram");
+
+        ST e = new ST(
+            "<names> [<length(names)> items)]"
+        );
+        // NOTE: don't pass in the List, but an Iterator on the list
+        e.add("names", names.iterator());
+        String expecting = "TerTomSriram [3 items)]";
+        assertEquals(expecting, e.render());
+    }
+
+    @Test public void testLengthWithIterator_lengthAndApply() throws Exception {
+        List<String> names = new ArrayList<String>();
+        names.add("Ter");
+        names.add("Tom");
+        names.add("Sriram");
+
+        ST e = new ST(
+            "[<length(names)> items] <names>"
+        );
+        // NOTE: don't pass in the List, but an Iterator on the list
+        e.add("names", names.iterator());
+        String expecting = "[3 items] TerTomSriram";
+        assertEquals(expecting, e.render());
+    }
+
     @Test public void testFirstOp() throws Exception {
         org.stringtemplate.v4.ST e = new org.stringtemplate.v4.ST(
                 "<first(names)>"
